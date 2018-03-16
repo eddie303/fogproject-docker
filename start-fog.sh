@@ -1,4 +1,7 @@
 #!/bin/sh
+
+## start docker-fog 
+
 FOG_DIR="/srv/fog"
 
 SERVER_IP="10.0.66.2"
