@@ -4,4 +4,6 @@
 DB_HOSTNAME=`echo $DB_PORT | cut -f3 -d/ | cut -f1 -d:`
 DB_PORT_INT=`echo $DB_PORT | cut -f3 -d:`
 
+/etc/init.d/
+/etc/init.d/mysql start
 /usr/sbin/apachectl -D FOREGROUND
