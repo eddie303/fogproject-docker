@@ -13,6 +13,7 @@ RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/Europe/Bucharest /etc/loca
  && apt-get update \
  && apt-get install -y php apache2 libapache2-mod-php mysql-server git \
  && apt-get clean \
+ && ln -s /etc/apparmor.d/usr.sbin.mysqld /etc/apparmor.d/disable/usr.sbin.mysqld \
  && rm -rf /var/www/html/* \
  && a2enmod rewrite \
  && cd /tmp \

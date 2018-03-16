@@ -22,6 +22,10 @@ docker run -d \
 -p $SERVER_IP:111:111 \
 -p $SERVER_IP:34463:34463/udp \
 -p $SERVER_IP:34463:34463 \
---privileged -e WEB_HOST_PORT=80 --name=fog \
+-e DB_NAME="fog" \
+-e DB_USER="fogusr" \
+-e DB_PASS="f0gp455t4" \
+--link apia-mariadb:db \
+--cap-add=ALL --privileged -e WEB_HOST_PORT=80 --name=fog \
 -v $FOG_DIR:/transfer -v $FOG_DIR/opt:/opt/fog -v $FOG_DIR/images:/images eddie303/fogproject-docker
 
