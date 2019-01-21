@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 MAINTAINER Eduard Istvan Sas <eduard.istvan.sas@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -11,14 +11,15 @@ RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/Europe/Bucharest /etc/loca
  && apt-get update \
  && apt-get -y dist-upgrade \
  && apt-get update \
- && apt-get install -y php apache2 libapache2-mod-php mysql-server git \
+ && apt-get install -y iproute2 php apache2 libapache2-mod-php mysql-server git \
+ && ln -s /etc/php/7.2 /etc/php/7.1 \
  && apt-get clean \
- && ln -s /etc/apparmor.d/usr.sbin.mysqld /etc/apparmor.d/disable/usr.sbin.mysqld \
+# && ln -s /etc/apparmor.d/usr.sbin.mysqld /etc/apparmor.d/disable/usr.sbin.mysqld \
  && rm -rf /var/www/html/* \
  && a2enmod rewrite \
  && cd /tmp \
- && git clone https://github.com/fogproject/fogproject.git fog_1.5.0/ \
- && cd fog_1.5.0/bin \
+ && git clone https://github.com/fogproject/fogproject.git fog/ \
+ && cd fog/bin \
  && export LANG=C.UTF-8 \
  && cat /tmp/respond.txt | bash ./installfog.sh -X 
 
