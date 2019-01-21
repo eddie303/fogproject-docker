@@ -15,18 +15,23 @@ sed -i "s/define('DATABASE_NAME', 'fog');/define('DATABASE_NAME', '$DB_NAME_INT'
 sed -i "s/define('DATABASE_USERNAME', 'root');/define('DATABASE_USERNAME', '$DB_USER_INT');/g" /var/www/fog/lib/fog/config.class.php
 sed -i "s/define('DATABASE_PASSWORD', '');/define('DATABASE_PASSWORD', '$DB_PASS_INT');/g" /var/www/fog/lib/fog/config.class.php
 
+/usr/local/bin/fixChain.py
+
 /etc/init.d/rpcbind start
 /etc/init.d/vsftpd start
 /etc/init.d/tftpd-hpa start
 /etc/init.d/mysql start
 /etc/init.d/nfs-kernel-server start
-/etc/init.d/php-fpm7.2 start
+/etc/init.d/php7.2-fpm start
 if [ !$DB_EXISTS ]; then
   if [ -n "$DB_ROOTPASS" ]; then 
     mysql -h $DB_HOST_INT -u root -p$DB_ROOTPASS -e "CREATE DATABASE $DB_NAME_INT;"
-    mysql -h $DB_HOST_INT -u root -p$DB_ROOTPASS -e "GRANT ALL PRIVILEGES ON $DB_NAME_INT.* TO '$DB_USER_INT'@'%' IDENTIFIED BY '$DB_PASS'"
+    mysql -h $DB_HOST_INT -u root -p$DB_ROOTPASS -e "GRANT ALL PRIVILEGES ON $DB_NAME_INT.* TO '$DB_USER_INT'@'%' IDENTIFIED BY '$DB_PASS' WITH GRANT OPTION;"
+    mysql -h $DB_HOST_INT -u root -p$DB_ROOTPASS -e "GRANT CREATE USER ON *.* TO $DB_USER_INT WITH GRANT OPTION;"
   else
     mysql -h $DB_HOST_INT -u root -e "CREATE DATABASE $DB_NAME_INT;"
-    mysql -h $DB_HOST_INT -u root -e  "GRANT ALL PRIVILEGES ON $DB_NAME_INT.* TO '$DB_USER_INT'@'%' IDENTIFIED BY '$DB_PASS'"
+    mysql -h $DB_HOST_INT -u root -e "GRANT ALL PRIVILEGES ON $DB_NAME_INT.* TO '$DB_USER_INT'@'%' IDENTIFIED BY '$DB_PASS' WITH GRANT OPTION;"
+    mysql -h $DB_HOST_INT -u root -e "GRANT CREATE USER ON *.* TO $DB_USER_INT WITH GRANT OPTION;"
+  fi
 fi
 /usr/sbin/apachectl -D FOREGROUND

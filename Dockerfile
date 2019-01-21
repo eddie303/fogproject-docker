@@ -4,6 +4,7 @@ MAINTAINER Eduard Istvan Sas <eduard.istvan.sas@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 
 ADD docker-entrypoint.sh /usr/local/bin/
+ADD fixChain.py /usr/local/bin
 ADD respond.txt /tmp
 
 RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/Europe/Bucharest /etc/localtime \
