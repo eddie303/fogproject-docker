@@ -4,10 +4,10 @@
 
 FOG_DIR="/srv/fog"
 
-SERVER_IP="10.0.66.2"
+SERVER_IP="192.168.200.1"
 FOG_DIR=/srv/fog
 
-docker run -d \
+docker run -id \
 -p $SERVER_IP:212:212/udp \
 -p $SERVER_IP:9098:9098 \
 -p $SERVER_IP:21:21 \
@@ -25,7 +25,7 @@ docker run -d \
 -e DB_NAME="fog" \
 -e DB_USER="fogusr" \
 -e DB_PASS="f0gp455t4" \
---link apia-mariadb:db \
---cap-add=ALL --privileged -e WEB_HOST_PORT=80 --name=fog \
--v $FOG_DIR:/transfer -v $FOG_DIR/opt:/opt/fog -v $FOG_DIR/images:/images eddie303/fogproject-docker
+-e DB_ROOT_PASS="" \
+--cap-add=ALL --privileged -e WEB_HOST_PORT=80 --net host --name=fog \
+-v $FOG_DIR:/transfer -v $FOG_DIR/opt:/opt/fog -v $FOG_DIR/images:/images eddie303/fogproject
 
