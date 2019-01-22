@@ -10,13 +10,23 @@ DB_ROOT_INT=${DB_ROOT:-"root"}
 DB_PASS_INT=${DB_PASS:-""}
 DB_EXISTS=`mysql -h $DB_HOST_INT -u $DB_USER_INT -p$DB_PASS_INT --skip-column-names -e "SHOW DATABASES LIKE '$DB_NAME_INT'"`
 
+# Change database access info
 sed -i "s/define('DATABASE_HOST', 'localhost');/define('DATABASE_HOST', '$DB_HOSTNAME');/g" /var/www/fog/lib/fog/config.class.php
 sed -i "s/define('DATABASE_NAME', 'fog');/define('DATABASE_NAME', '$DB_NAME_INT');/g" /var/www/fog/lib/fog/config.class.php
 sed -i "s/define('DATABASE_USERNAME', 'root');/define('DATABASE_USERNAME', '$DB_USER_INT');/g" /var/www/fog/lib/fog/config.class.php
 sed -i "s/define('DATABASE_PASSWORD', '');/define('DATABASE_PASSWORD', '$DB_PASS_INT');/g" /var/www/fog/lib/fog/config.class.php
 
-/usr/local/bin/fixChain.py
+# Try to get IP Address and active network interface on the specific subnet
+if [ !$EXTIP ]; then
+  ACTIVE_ETH=`ip route get 1.1.1.1 | awk -- '{ print $5 }'`
+  export EXTIP=`ip addr show $ACTIVE_ETH | grep inet\ | awk -- '{print $2 }' | cut -f1 -d/`
+else
+  ACTIVE_ETH=`ip addr show | grep $EXTIP | awk -- '{ print $7 }'`
+fi
+export ACTIVE_ETH
+python3 /usr/local/bin/fixChain.py
 
+#Start services
 /etc/init.d/rpcbind start
 /etc/init.d/vsftpd start
 /etc/init.d/tftpd-hpa start

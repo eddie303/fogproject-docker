@@ -32,11 +32,11 @@ for i in range(0,len(data)):
 		data[i] = "	define('STORAGE_HOST', \""  + str(os.environ['EXTIP']) + "\");\n"
 	#INTERFACE
 	if "WOL_INTERFACE" in data[i]:
-		data[i] = "	define('WOL_INTERFACE', \"eth0\");\n"
+		data[i] = "	define('WOL_INTERFACE', \"" + str(os.environ['ACTIVE_ETH']) + "\");\n"
 	if "NFS_ETH_MONITOR" in data[i]:
-		data[i] = "	define('NFS_ETH_MONITOR', \"eth0\");\n"
+		data[i] = "	define('NFS_ETH_MONITOR', \"" + str(os.environ['ACTIVE_ETH']) + "\");\n"
 	if "UDPCAST_INTERFACE" in data[i]:
-		data[i] = "	define('UDPCAST_INTERFACE', \"eth0\");\n"
+		data[i] = "	define('UDPCAST_INTERFACE', \"" + str(os.environ['ACTIVE_ETH']) + "\");\n"
 with open('/var/www/fog/lib/fog/config.class.php', 'w') as file:
     file.writelines( data )
 
