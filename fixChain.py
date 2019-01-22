@@ -31,6 +31,10 @@ for i in range(0,len(data)):
 	if "STORAGE_HOST" in data[i]:
 		data[i] = "	define('STORAGE_HOST', \""  + str(os.environ['EXTIP']) + "\");\n"
 	#INTERFACE
+	if "MULTICASTINTERFACE" in data[i]:
+		data[i] = "	define('MULTICASTINTERFACE', \"" + str(os.environ['ACTIVE_ETH']) +"\");\n"
+	if "STORAGE_INTERFACE" in data[i]:
+		data[i] = "	define('STORAGE_INTERFACE', \"" + str(os.environ['ACTIVE_ETH']) + "\");\n"
 	if "WOL_INTERFACE" in data[i]:
 		data[i] = "	define('WOL_INTERFACE', \"" + str(os.environ['ACTIVE_ETH']) + "\");\n"
 	if "NFS_ETH_MONITOR" in data[i]:
@@ -46,7 +50,7 @@ with open('/etc/default/tftpd-hpa', 'r') as file:
 
 for i in range(0,len(data)):
 	if "TFTP_ADDRESS" in data[i]:
-		data[i] = 'TFTP_ADDRESS="[::1]:69"\n'
+		data[i] = 'TFTP_ADDRESS="' + str(os.environ["EXTIP"]) + ':69"\n'
 
 with open('/etc/default/tftpd-hpa', 'w') as file:
     file.writelines( data )

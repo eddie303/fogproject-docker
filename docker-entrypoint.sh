@@ -17,13 +17,14 @@ sed -i "s/define('DATABASE_USERNAME', 'root');/define('DATABASE_USERNAME', '$DB_
 sed -i "s/define('DATABASE_PASSWORD', '');/define('DATABASE_PASSWORD', '$DB_PASS_INT');/g" /var/www/fog/lib/fog/config.class.php
 
 # Try to get IP Address and active network interface on the specific subnet
-if [ !$EXTIP ]; then
+if [ -n "$EXTIP" ]; then
+  ACTIVE_ETH=`ip addr show | grep $EXTIP | awk -- '{ print $7 }'`
+else
   ACTIVE_ETH=`ip route get 1.1.1.1 | awk -- '{ print $5 }'`
   export EXTIP=`ip addr show $ACTIVE_ETH | grep inet\ | awk -- '{print $2 }' | cut -f1 -d/`
-else
-  ACTIVE_ETH=`ip addr show | grep $EXTIP | awk -- '{ print $7 }'`
 fi
 export ACTIVE_ETH
+touch /opt/fog/.fogsettings
 python3 /usr/local/bin/fixChain.py
 
 #Start services
