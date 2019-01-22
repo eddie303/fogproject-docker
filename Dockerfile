@@ -18,7 +18,9 @@ RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/Europe/Bucharest /etc/loca
  && git clone https://github.com/fogproject/fogproject.git fog/ \
  && cd fog/bin \
  && export LANG=C.UTF-8 \
- && cat /tmp/respond.txt | bash ./installfog.sh -X 
+ && cat /tmp/respond.txt | bash ./installfog.sh -X \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists/*
 
 
 # Apache musthave env vars

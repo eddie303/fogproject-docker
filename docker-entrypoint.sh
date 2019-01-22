@@ -27,11 +27,14 @@ export ACTIVE_ETH
 touch /opt/fog/.fogsettings
 python3 /usr/local/bin/fixChain.py
 
+# Touch .mntcheck files before we get kicked out because the client does not see the file and thinks NFS cannot be mounted
+touch /images/.mntcheck
+touch /images/dev/.mntcheck
+
 #Start services
 /etc/init.d/rpcbind start
 /etc/init.d/vsftpd start
 /etc/init.d/tftpd-hpa start
-/etc/init.d/mysql start
 /etc/init.d/nfs-kernel-server start
 /etc/init.d/php7.2-fpm start
 if [ !$DB_EXISTS ]; then
@@ -45,4 +48,5 @@ if [ !$DB_EXISTS ]; then
     mysql -h $DB_HOST_INT -u root -e "GRANT CREATE USER ON *.* TO $DB_USER_INT WITH GRANT OPTION;"
   fi
 fi
+/etc/init.d/mysql start
 /usr/sbin/apachectl -D FOREGROUND
