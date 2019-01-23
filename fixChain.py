@@ -50,7 +50,8 @@ with open('/etc/default/tftpd-hpa', 'r') as file:
 
 for i in range(0,len(data)):
 	if "TFTP_ADDRESS" in data[i]:
-		data[i] = 'TFTP_ADDRESS="' + str(os.environ["EXTIP"]) + ':69"\n'
+		# data[i] = 'TFTP_ADDRESS="' + str(os.environ["EXTIP"]) + ':69"\n'
+		data[i] = 'TFTP_ADDRESS="0.0.0.0:69"\n'
 
 with open('/etc/default/tftpd-hpa', 'w') as file:
     file.writelines( data )
