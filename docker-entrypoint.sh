@@ -18,7 +18,8 @@ sed -i "s/define('DATABASE_PASSWORD', '');/define('DATABASE_PASSWORD', '$DB_PASS
 
 # Try to get IP Address and active network interface on the specific subnet
 if [ -n "$EXTIP" ]; then
-  ACTIVE_ETH=`ip addr show | grep $EXTIP | awk -- '{ print $7 }'`
+  ACTIVE_ETH_TMP=`ip addr show | grep $EXTIP | awk -- '{ print $7 }'`
+  ACTIVE_ETH=${ACTIVE_ETH_TMP:-"eth0"}
 else
   ACTIVE_ETH=`ip route get 1.1.1.1 | awk -- '{ print $5 }'`
   export EXTIP=`ip addr show $ACTIVE_ETH | grep inet\ | awk -- '{print $2 }' | cut -f1 -d/`
@@ -31,7 +32,13 @@ python3 /usr/local/bin/fixChain.py
 touch /images/.mntcheck
 touch /images/dev/.mntcheck
 
+# Populate /tftpboot if it is mounted as external volume
+tar xzvf /tmp/tftpboot-content.tar.gz -C /
+
 #Start services
+if [ $DB_HOSTNAME == "localhost" ]; then
+  /etc/init.d/mysql start
+fi
 /etc/init.d/rpcbind start
 /etc/init.d/vsftpd start
 /etc/init.d/tftpd-hpa start
@@ -48,5 +55,4 @@ if [ !$DB_EXISTS ]; then
     mysql -h $DB_HOST_INT -u root -e "GRANT CREATE USER ON *.* TO $DB_USER_INT WITH GRANT OPTION;"
   fi
 fi
-/etc/init.d/mysql start
 /usr/sbin/apachectl -D FOREGROUND

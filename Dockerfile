@@ -19,9 +19,11 @@ RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/Europe/Bucharest /etc/loca
  && cd fog/bin \
  && export LANG=C.UTF-8 \
  && cat /tmp/respond.txt | bash ./installfog.sh -X \
+ && sed -i s/"manage-gids"/"manage-gids -p 32765"/g /etc/default/nfs-kernel-server \
  && apt clean \
- && rm -rf /var/lib/apt/lists/*
-
+ && rm -rf /var/lib/apt/lists/* \
+ && rm -rf /tmp/* \
+ && tar czvf /tmp/tftpboot-content.tar.gz /tftpboot/*
 
 # Apache musthave env vars
 ENV APACHE_RUN_USER www-data
