@@ -5,7 +5,7 @@ Please make sure that you have NFS support installed on the host and the modules
 	sudo echo "nfs" >> /etc/modules
 	sudo echo "nfsd" >> /etc/modules
  
-If one wants to run without --net host, then it will need the nf-conntrack-tftp and nf-nat-tftp modules loaded in the kernel.
+If one wants to run without --net host, then it will need the nf-conntrack-tftp and nf-nat-tftp modules loaded in the kernel. In this case, you're better off installing tftpd-hpa on the host and mounting /tftpboot as a volume, the container will populate the directory, but for the moment I can't figure out, how to put the internal tftpd to work properly as UDP packets are lost in the way back :/ 
 You will need to disable apparmor on mysql on the host if you want to run the built-in mysql server with
 
 	ln -s /etc/apparmor.d/usr.sbin.mysqld /etc/apparmor.d/disable/usr.sbin.mysql
