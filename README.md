@@ -11,5 +11,7 @@ You will need to disable apparmor on mysql on the host if you want to run the bu
 	ln -s /etc/apparmor.d/usr.sbin.mysqld /etc/apparmor.d/disable/usr.sbin.mysql
 
 The file start-fog.sh is a way to start the container. dhcpd is intended to run outside the container, hence the given configuration file.
+If you intend to run the database in another container, add 
+	--link your_mysql_instance:DB
 Great thanks to Tortuginator for the Python script!
 

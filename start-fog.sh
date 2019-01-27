@@ -29,7 +29,7 @@ docker run -id \
 -e DB_NAME="fog" \
 -e DB_USER="fogusr" \
 -e DB_PASS="f0gp455t4" \
--e DB_ROOT_PASS="" \
+-e DB_ROOTPASS="" \
 -e EXTIP="192.168.200.1" \
 --privileged --security-opt apparmor=eddie303-fogproject -e WEB_HOST_PORT=80 --name=fog \
 -v $FOG_DIR:/transfer -v $FOG_DIR/opt:/opt/fog -v $FOG_DIR/images:/images -v /tftpboot:/tftpboot eddie303/fogproject
