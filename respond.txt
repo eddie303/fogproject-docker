@@ -2,7 +2,7 @@
 y
 n
 N
-y
+n
 eth0
 y
 
