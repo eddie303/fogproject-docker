@@ -1,14 +1,12 @@
 2
 y
 n
-N
-n
+y
 eth0
-y
-
 n
 n
 n
-y
+n
+n
 y
 
