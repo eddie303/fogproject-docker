@@ -30,8 +30,10 @@ sed -i 5s/Listen.*/Listen\ $ACTUAL_IP:80/g /etc/apache2/ports.conf
 sed -i 8s/Listen.*/Listen\ $ACTUAL_IP:443/g /etc/apache2/ports.conf
 sed -i 12s/Listen.*/Listen\ $ACTUAL_IP:443/g /etc/apache2/ports.conf
 
+# Populate /opt/fog contents if it is mounted from external volume
 
-touch /opt/fog/.fogsettings
+#touch /opt/fog/.fogsettings
+tar xzvf /tmp/opt-content.tar.gz -C /
 
 # Touch .mntcheck files before we get kicked out because the client does not see the file and thinks NFS cannot be mounted
 chown fog:fog /images -R
