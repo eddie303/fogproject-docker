@@ -23,7 +23,8 @@ RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/Europe/Bucharest /etc/loca
  && apt clean \
  && rm -rf /var/lib/apt/lists/* \
  && rm -rf /tmp/* \
- && tar czvf /tmp/tftpboot-content.tar.gz /tftpboot/*
+ && tar czvf /tmp/tftpboot-content.tar.gz /tftpboot/* \
+ && tar czvf /tmp/opt-content.tar.gz /opt/fog/*
 
 # Apache musthave env vars
 ENV APACHE_RUN_USER www-data
